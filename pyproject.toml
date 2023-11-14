@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling", "requests", "json", "warnings", "csv", "io", "pandas"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "hubamp_template_helper"
@@ -10,11 +10,16 @@ authors = [
 ]
 description = "Helper functions for templates within HuBMAP Data Portal"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.7"
+keywords = ["HuBMAP"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=0.2.0",
+    "pandas>=0.20.0",
 ]
 
 [project.urls]
