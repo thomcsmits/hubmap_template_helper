@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Helper functions for templates within HuBMAP Data Portal"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.0"
 keywords = ["HuBMAP"]
 classifiers = [
     "Programming Language :: Python :: 3",
