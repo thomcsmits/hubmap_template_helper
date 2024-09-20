@@ -1,6 +1,7 @@
 from csv import DictReader, excel_tab
 from io import StringIO
 import requests
+import json
 import pandas as pd
 
 
@@ -55,3 +56,41 @@ def get_uuid_to_hubmap_mapping(
     # Create mapping from uuid to hubmap id
     uuid_to_hubmap = dict(zip(metadata['uuid'], metadata['hubmap_id']))
     return uuid_to_hubmap
+
+
+def get_hubmap_to_uuid_mapping(
+        hubmap_ids,
+        search_api="https://search.api.hubmapconsortium.org/v3/portal/search"):
+    '''
+    Retrieve a dictionary mapping hubmap ids to uuids.
+
+    Parameters
+    ----------
+    hubmap_ids : list
+        list with hubmap_ids
+    search_api : string, optional
+        URL for HuBMAP Data Portal Search API endpoint
+
+    Returns
+    -------
+    dictionary mapping hubmap ids to uuids
+    '''
+    # Query Search API with hubmap_ids, retrieve uuids
+    hits = json.loads(
+        requests.post(
+            search_api,
+            json={
+                "size": 10000,
+                "query": {
+                    "terms": {
+                        "hubmap_id.keyword": hubmap_ids
+                    }
+                },
+                "_source": ["uuid", "hubmap_id"]
+            },
+        ).text
+    )["hits"]["hits"]
+
+    # Create mapping from hubmap id to uuid
+    hubmap_to_uuid = {hit["_source"]['hubmap_id']: hit["_source"]['uuid'] for hit in hits}
+    return hubmap_to_uuid
